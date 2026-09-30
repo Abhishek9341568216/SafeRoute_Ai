@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}SafeRoute AI - About & Methodology{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>About & Academic Methodology</h1>
+    <p>Comprehensive system architecture, dataset descriptions, mathematical formulations, and evaluation design.</p>
+</div>
+
+<div class="card-custom mb-4">
+    <h4 class="fw-bold text-dark"><i class="fa-solid fa-bullseye text-primary me-2"></i> Project Objectives & Scope</h4>
+    <p>
+        <strong>SafeRoute AI</strong> is an end-to-end artificial intelligence decision-support platform designed to address 
+        urban traffic congestion and accident risk prediction. Rather than claiming autonomous prevention, the platform provides 
+        data-driven risk scoring, congestion forecasts, and spatial hotspot detection to support preventive urban traffic management.
+    </p>
+</div>
+
+<div class="card-custom mb-4">
+    <h4 class="fw-bold text-dark"><i class="fa-solid fa-database text-primary me-2"></i> Complementary Datasets</h4>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="p-3 bg-light rounded border h-100">
+                <h6 class="fw-bold text-primary">1. UCI Metro Interstate Traffic Volume Dataset</h6>
+                <p class="small text-muted mb-1">Target: <code>traffic_volume</code> (Continuous Regression)</p>
+                <p class="small">
+                    Contains 48,204 hourly traffic readings on Interstate 94 in Minneapolis, MN (2012–2018), accompanied by 
+                    temperature, rain, snow, cloud cover, and categorical weather states.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 bg-light rounded border h-100">
+                <h6 class="fw-bold text-danger">2. US Accidents Dataset (2016–2023)</h6>
+                <p class="small text-muted mb-1">Target: <code>Severity</code> / <code>high_risk_target</code> (Classification & Clustering)</p>
+                <p class="small">
+                    Countrywide traffic accident records covering spatial coordinates (Latitude, Longitude), environmental weather parameters, 
+                    and roadway infrastructure flags (Traffic Signals, Crossings, Junctions).
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-custom mb-4">
+    <h4 class="fw-bold text-dark"><i class="fa-solid fa-gears text-primary me-2"></i> Machine Learning Pipelines</h4>
+    <ul>
+        <li>
+            <strong>Traffic Volume Regression:</strong> Compared <em>Linear Regression, Polynomial Regression (Degree 2), Decision Tree, Random Forest, and Gradient Boosting Regressors</em>. 
+            Evaluated via MAE, MSE, RMSE, and R² metrics.
+        </li>
+        <li class="mt-2">
+            <strong>Accident Risk Classification:</strong> Constructed binary risk target (Severity &ge; 3 mapped to High Risk). 
+            Evaluated <em>Logistic Regression, Decision Trees, Random Forests, Support Vector Machines (SVM), and K-Nearest Neighbors (KNN)</em> using Accuracy, Precision, Recall, F1, ROC-AUC, and Confusion Matrices.
+        </li>
+        <li class="mt-2">
+            <strong>Spatial Clustering:</strong> Evaluated <em>K-Means (k=8)</em> centroid partitioning against <em>DBSCAN (eps=0.3, min_samples=15)</em> density-based clustering to discover geographic accident hotspots while filtering spatial noise points (-1).
+        </li>
+    </ul>
+</div>
+
+<div class="card-custom mb-4">
+    <h4 class="fw-bold text-dark"><i class="fa-solid fa-hand-holding-hand text-warning me-2"></i> System Framing & Limitations</h4>
+    <div class="alert alert-warning mb-0">
+        <h6 class="fw-bold"><i class="fa-solid fa-triangle-exclamation me-1"></i> Decision-Support Disclaimer & Scope</h6>
+        <p class="small mb-0">
+            SafeRoute AI does not assert direct accident prevention or live vehicular remote control. 
+            Predictions reflect historical statistical correlations between environmental features, temporal attributes, and past traffic incidents. 
+            The system serves as an analytical decision-support tool for traffic safety authorities and urban planners.
+        </p>
+    </div>
+</div>
+{% endblock %}

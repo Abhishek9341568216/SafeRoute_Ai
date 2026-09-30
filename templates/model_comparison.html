@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}SafeRoute AI - Model Comparison{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Machine Learning Model Comparison</h1>
+    <p>Empirical evaluation of regression, classification, and spatial clustering algorithms on traffic and accident datasets.</p>
+</div>
+
+<!-- Traffic Volume Regression Comparison -->
+<div class="card-custom mb-4">
+    <h5 class="card-title"><i class="fa-solid fa-chart-line text-primary me-2"></i> Traffic Volume Regression Algorithms</h5>
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Algorithm</th>
+                    <th>MAE (Vehicles/hr)</th>
+                    <th>MSE</th>
+                    <th>RMSE</th>
+                    <th>R² Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in traffic_models %}
+                <tr {% if m.model == 'Random Forest Regressor' %}class="table-success fw-bold"{% endif %}>
+                    <td>{{ m.model }} {% if m.model == 'Random Forest Regressor' %}<span class="badge bg-success ms-2">Selected</span>{% endif %}</td>
+                    <td>{{ m.mae }}</td>
+                    <td>{{ m.mse }}</td>
+                    <td>{{ m.rmse }}</td>
+                    <td><strong>{{ m.r2 }}</strong></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Accident Risk Severity Classification Comparison -->
+<div class="card-custom mb-4">
+    <h5 class="card-title"><i class="fa-solid fa-shield-virus text-danger me-2"></i> Accident Risk Classification Algorithms</h5>
+    <div class="table-responsive">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1 Score</th>
+                    <th>ROC-AUC</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in accident_models %}
+                <tr {% if m.model == 'Random Forest Classifier' %}class="table-success fw-bold"{% endif %}>
+                    <td>{{ m.model }} {% if m.model == 'Random Forest Classifier' %}<span class="badge bg-success ms-2">Selected</span>{% endif %}</td>
+                    <td>{{ m.accuracy }}</td>
+                    <td>{{ m.precision }}</td>
+                    <td>{{ m.recall }}</td>
+                    <td><strong>{{ m.f1 }}</strong></td>
+                    <td>{{ m.roc_auc if m.roc_auc else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Spatial Clustering Comparison -->
+<div class="card-custom mb-4">
+    <h5 class="card-title"><i class="fa-solid fa-bullseye text-warning me-2"></i> Hotspot Clustering Approach Comparison</h5>
+    <div class="row g-4 align-items-center">
+        <div class="col-md-6">
+            <div class="p-3 bg-light rounded border">
+                <h6 class="fw-bold">K-Means Clustering</h6>
+                <p class="mb-1 small">Silhouette Score: <strong>{{ clustering.kmeans_silhouette }}</strong></p>
+                <small class="text-muted">Partitioned spatial data into k distinct geometric clusters based on centroid distance minimization.</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 bg-light rounded border">
+                <h6 class="fw-bold">DBSCAN Clustering</h6>
+                <p class="mb-1 small">Silhouette Score: <strong>{{ clustering.dbscan_silhouette }}</strong></p>
+                <small class="text-muted">Density-based clustering identified high-density accident corridors while filtering noise points (-1).</small>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-info mt-3 mb-0">
+        <i class="fa-solid fa-circle-info me-2"></i> {{ clustering.comparison }}
+    </div>
+</div>
+{% endblock %}

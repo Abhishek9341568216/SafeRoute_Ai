@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}SafeRoute AI - Geographic Hotspots{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Accident Hotspot Spatial Map</h1>
+    <p>Geographic spatial clusters derived from K-Means and DBSCAN density analysis on accident locations.</p>
+</div>
+
+<div class="row g-4">
+    <!-- Map Column -->
+    <div class="col-lg-8">
+        <div class="card-custom p-0 overflow-hidden style-map-container" style="height: 600px;">
+            {{ map_html|safe }}
+        </div>
+    </div>
+
+    <!-- Cluster Details Column -->
+    <div class="col-lg-4">
+        <div class="card-custom h-100" style="max-height: 600px; overflow-y: auto;">
+            <h5 class="card-title"><i class="fa-solid fa-layer-group me-2"></i> Cluster Summary List</h5>
+            {% if hotspots %}
+            <div class="list-group list-group-flush">
+                {% for h in hotspots %}
+                <div class="list-group-item px-0 py-3">
+                    <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                        <h6 class="mb-0 fw-bold">Cluster #{{ h.cluster_id }}</h6>
+                        <span class="badge {% if h.risk_level == 'High' %}bg-danger{% elif h.risk_level == 'Medium' %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                            {{ h.risk_level }} Risk
+                        </span>
+                    </div>
+                    <p class="mb-1 small text-muted">
+                        Accident Incidents: <strong>{{ h.accident_count }}</strong> | Avg Severity: <strong>{{ h.avg_severity if h.avg_severity else 'N/A' }}</strong>
+                    </p>
+                    <small class="text-secondary"><i class="fa-solid fa-location-crosshairs me-1"></i> Lat: {{ h.latitude }}, Lng: {{ h.longitude }}</small>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted my-3">No spatial hotspot clusters detected yet. Run hotspot clustering model.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}

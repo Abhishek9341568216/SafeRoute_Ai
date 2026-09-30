@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}SafeRoute AI - Home{% endblock %}
+
+{% block content %}
+<div class="row align-items-center my-4 py-4">
+    <div class="col-lg-7">
+        <span class="badge bg-primary px-3 py-2 rounded-pill mb-3">Academic AI/ML Lab Project</span>
+        <h1 class="display-4 fw-bold text-dark mb-3">An Intelligent Traffic Congestion & Accident Risk Prediction Platform</h1>
+        <p class="lead text-muted mb-4">
+            SafeRoute AI leverages machine learning algorithms—regression pipelines for hourly traffic volume forecasting, 
+            classification pipelines for accident severity risk scoring, and spatial clustering (K-Means & DBSCAN) 
+            for geographic accident hotspot identification.
+        </p>
+        <div class="d-flex gap-3">
+            <a href="{{ url_for('predict_page') }}" class="btn btn-primary-custom btn-lg">
+                <i class="fa-solid fa-calculator me-2"></i> Run Risk Prediction
+            </a>
+            <a href="{{ url_for('hotspots') }}" class="btn btn-outline-custom btn-lg">
+                <i class="fa-solid fa-map-location-dot me-2"></i> Explore Hotspots
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-5 text-center mt-4 mt-lg-0">
+        <div class="p-4 bg-white rounded-4 shadow-sm border">
+            <i class="fa-solid fa-network-wired text-primary fa-4x mb-3"></i>
+            <h4 class="fw-bold">Decision-Support Architecture</h4>
+            <p class="small text-muted mb-0">
+                Integrates UCI Metro Interstate Traffic Volume & US Accidents Datasets into an integrated analytical dashboard.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 my-3">
+    <div class="col-md-4">
+        <div class="card-custom text-center h-100">
+            <i class="fa-solid fa-chart-line text-primary fa-2x mb-3"></i>
+            <h5 class="card-title">Traffic Volume Regression</h5>
+            <p class="small text-muted">
+                Evaluates Linear, Polynomial, Decision Tree, Random Forest, and Gradient Boosting Regressors to forecast congestion levels.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card-custom text-center h-100">
+            <i class="fa-solid fa-triangle-exclamation text-danger fa-2x mb-3"></i>
+            <h5 class="card-title">Accident Severity Risk</h5>
+            <p class="small text-muted">
+                Classifies risk probabilities using Logistic Regression, Decision Trees, Random Forest, SVM, and KNN.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card-custom text-center h-100">
+            <i class="fa-solid fa-bullseye text-warning fa-2x mb-3"></i>
+            <h5 class="card-title">Geographic Hotspot Detection</h5>
+            <p class="small text-muted">
+                Compares spatial density clustering (K-Means vs DBSCAN) on latitude/longitude coordinates to identify high-density accident clusters.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

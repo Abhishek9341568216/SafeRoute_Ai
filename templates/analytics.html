@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}SafeRoute AI - Analytics Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Exploratory Data Analysis & Risk Analytics</h1>
+    <p>Interactive visualizations of traffic patterns, weather impacts, and accident severity distributions.</p>
+</div>
+
+<!-- Traffic Charts Row -->
+<h4 class="fw-bold text-dark mt-4 mb-3"><i class="fa-solid fa-car text-primary me-2"></i> Traffic Volume Patterns</h4>
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card-custom">
+            <div id="hourlyChart" style="height: 380px;"></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card-custom">
+            <div id="trafficDistChart" style="height: 380px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-lg-12">
+        <div class="card-custom">
+            <div id="weatherTrafficChart" style="height: 380px;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Accident Risk Charts Row -->
+<h4 class="fw-bold text-dark mt-4 mb-3"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i> Accident Risk Analysis</h4>
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card-custom">
+            <div id="severityChart" style="height: 380px;"></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card-custom">
+            <div id="hourlyAccChart" style="height: 380px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-12">
+        <div class="card-custom">
+            <div id="weatherAccChart" style="height: 380px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hourlyData = {{ hourly_chart|safe }};
+        if (hourlyData.data) Plotly.newPlot('hourlyChart', hourlyData.data, hourlyData.layout);
+
+        const distData = {{ dist_chart|safe }};
+        if (distData.data) Plotly.newPlot('trafficDistChart', distData.data, distData.layout);
+
+        const weatherTrafficData = {{ weather_traffic_chart|safe }};
+        if (weatherTrafficData.data) Plotly.newPlot('weatherTrafficChart', weatherTrafficData.data, weatherTrafficData.layout);
+
+        const sevData = {{ sev_chart|safe }};
+        if (sevData.data) Plotly.newPlot('severityChart', sevData.data, sevData.layout);
+
+        const hourlyAccData = {{ hourly_acc_chart|safe }};
+        if (hourlyAccData.data) Plotly.newPlot('hourlyAccChart', hourlyAccData.data, hourlyAccData.layout);
+
+        const weatherAccData = {{ weather_acc_chart|safe }};
+        if (weatherAccData.data) Plotly.newPlot('weatherAccChart', weatherAccData.data, weatherAccData.layout);
+    });
+</script>
+{% endblock %}

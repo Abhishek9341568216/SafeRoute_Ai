@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}SafeRoute AI - Risk & Congestion Prediction{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Traffic & Risk Prediction Engine</h1>
+    <p>Input environmental and temporal metrics to generate traffic volume forecasts and accident severity risk scoring.</p>
+</div>
+
+<div class="row g-4">
+    <!-- Form Column -->
+    <div class="col-lg-6">
+        <div class="card-custom">
+            <h5 class="card-title"><i class="fa-solid fa-sliders me-2"></i> Environmental & Temporal Parameters</h5>
+            <form id="predictionForm">
+                <div class="mb-3">
+                    <label class="form-label">Roadway Location / Sector Name</label>
+                    <input type="text" class="form-control" name="location" value="Interstate 94 Corridor WB" required>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Date & Time</label>
+                        <input type="datetime-local" class="form-control" name="date_time" value="2026-10-01T08:30" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Temperature (°C)</label>
+                        <input type="number" step="0.1" class="form-control" name="temp" value="18.5" required>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Rainfall in 1h (mm)</label>
+                        <input type="number" step="0.1" class="form-control" name="rain_1h" value="0.0">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Snowfall in 1h (mm)</label>
+                        <input type="number" step="0.1" class="form-control" name="snow_1h" value="0.0">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Cloud Cover (%)</label>
+                        <input type="number" min="0" max="100" class="form-control" name="clouds_all" value="25">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Visibility (Miles)</label>
+                        <input type="number" step="0.1" class="form-control" name="visibility" value="10.0">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Weather Summary</label>
+                        <select class="form-select" name="weather_main">
+                            <option value="Clear" selected>Clear Sky</option>
+                            <option value="Clouds">Clouds / Overcast</option>
+                            <option value="Rain">Rain / Drizzle</option>
+                            <option value="Snow">Snow</option>
+                            <option value="Fog">Fog / Mist</option>
+                            <option value="Thunderstorm">Thunderstorm</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Holiday Indicator</label>
+                        <select class="form-select" name="holiday">
+                            <option value="None" selected>None (Regular Workday)</option>
+                            <option value="Labor Day">Labor Day</option>
+                            <option value="Thanksgiving Day">Thanksgiving Day</option>
+                            <option value="Christmas Day">Christmas Day</option>
+                            <option value="New Years Day">New Years Day</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom w-100 py-2 fs-6">
+                    <i class="fa-solid fa-play me-2"></i> Compute Prediction
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Output Column -->
+    <div class="col-lg-6">
+        <div id="loadingSpinner" class="text-center py-5 d-none">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Executing Machine Learning Inference...</span>
+            </div>
+            <p class="mt-3 text-muted">Running Preprocessing Pipeline & Model Inference...</p>
+        </div>
+
+        <div id="predictionResult" class="result-card d-none">
+            <h4 class="fw-bold text-dark mb-3"><i class="fa-solid fa-chart-pie text-primary me-2"></i> Inference Results</h4>
+            <p class="text-muted small">Location: <strong id="resLocation">-</strong></p>
+
+            <div class="row g-3 my-2">
+                <div class="col-6">
+                    <div class="p-3 bg-white rounded border">
+                        <small class="text-muted fw-bold">PREDICTED TRAFFIC</small>
+                        <div id="resTraffic" class="fs-4 fw-bold text-primary">-</div>
+                        <small id="resTrafficLevel" class="text-secondary">-</small>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 bg-white rounded border">
+                        <small class="text-muted fw-bold">ACCIDENT RISK PROBABILITY</small>
+                        <div id="resAccidentProb" class="fs-4 fw-bold text-danger">-</div>
+                        <div><span id="resRiskLevel" class="risk-badge">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h6 class="fw-bold text-secondary"><i class="fa-solid fa-lightbulb text-warning me-2"></i> Preventive Decision Recommendations</h6>
+                <ul id="resRecommendations" class="recommendations-list"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+{% endblock %}

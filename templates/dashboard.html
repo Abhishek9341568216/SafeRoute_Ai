@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}SafeRoute AI - Executive Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Executive Dashboard</h1>
+    <p>Real-time machine learning model status, detected spatial hotspots, and system prediction summary.</p>
+</div>
+
+<!-- KPI Cards Row -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="kpi-card">
+            <div class="kpi-icon blue">
+                <i class="fa-solid fa-car-side"></i>
+            </div>
+            <div>
+                <div class="kpi-label">Traffic Model</div>
+                <div class="kpi-value">{{ traffic_status }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi-card">
+            <div class="kpi-icon red">
+                <i class="fa-solid fa-shield-virus"></i>
+            </div>
+            <div>
+                <div class="kpi-label">Accident Classifier</div>
+                <div class="kpi-value">{{ accident_status }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi-card">
+            <div class="kpi-icon orange">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div>
+                <div class="kpi-label">Detected Hotspots</div>
+                <div class="kpi-value">{{ hotspot_count }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi-card">
+            <div class="kpi-icon green">
+                <i class="fa-solid fa-database"></i>
+            </div>
+            <div>
+                <div class="kpi-label">SQLite Database</div>
+                <div class="kpi-value">Connected</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content Grid -->
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card-custom h-100">
+            <h5 class="card-title"><i class="fa-solid fa-clock-rotate-left me-2"></i> Recent Prediction Log</h5>
+            {% if recent_predictions %}
+            <div class="table-responsive">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Timestamp</th>
+                            <th>Pred. Volume</th>
+                            <th>Accident Risk</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in recent_predictions %}
+                        <tr>
+                            <td><strong>{{ row.location }}</strong></td>
+                            <td><small class="text-muted">{{ row.timestamp }}</small></td>
+                            <td>{{ row.traffic_prediction }} vph</td>
+                            <td>{{ (row.accident_probability * 100)|round(1) }}%</td>
+                            <td><span class="badge bg-secondary">{{ row.risk_level }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted my-3">No prediction logs recorded yet. Run a prediction on the <a href="{{ url_for('predict_page') }}">Prediction page</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card-custom h-100">
+            <h5 class="card-title"><i class="fa-solid fa-circle-play me-2"></i> Quick Actions</h5>
+            <div class="d-grid gap-3 mt-3">
+                <a href="{{ url_for('predict_page') }}" class="btn btn-primary-custom text-center">
+                    <i class="fa-solid fa-calculator me-2"></i> Launch Prediction Tool
+                </a>
+                <a href="{{ url_for('hotspots') }}" class="btn btn-outline-custom text-center">
+                    <i class="fa-solid fa-map me-2"></i> Open Geographic Leaflet Map
+                </a>
+                <a href="{{ url_for('models_comparison') }}" class="btn btn-outline-custom text-center">
+                    <i class="fa-solid fa-list-check me-2"></i> Review Model Metrics
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

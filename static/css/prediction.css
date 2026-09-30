@@ -1,0 +1,52 @@
+/* Prediction Page Specific Styles */
+
+.form-label {
+  font-weight: 600;
+  color: var(--secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.result-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  padding: 1.8rem;
+  box-shadow: var(--shadow-md);
+}
+
+.risk-badge {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.risk-Low { background-color: #d1fae5; color: #065f46; }
+.risk-Moderate { background-color: #fef3c7; color: #92400e; }
+.risk-High { background-color: #fee2e2; color: #991b1b; }
+.risk-Critical { background-color: #881337; color: #ffffff; }
+
+.recommendations-list {
+  padding-left: 1.2rem;
+  margin-top: 1rem;
+}
+
+.recommendations-list li {
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
